@@ -14,8 +14,6 @@ gc=SDG.GraphContigger(ws)
 gc.clip_tips(MAX_TIP_SIZE, CLIPPING_ROUNDS)
 
 ## Simple bubble popping using pe support
-
-## add a pe datastore and path (map) the reads
 MAPPING_K=31
 peds=ws.add_paired_reads_datastore('./sdg_data/paired_end_reads.prseq', 'pe')
 peds.mapper.path_reads(MAPPING_K)
