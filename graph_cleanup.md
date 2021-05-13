@@ -2,7 +2,7 @@
 Simplest approach to tip clipping and bubble popping.
 
 ```python
-import SDGPython as SDG
+import SDGpython as SDG
 
 ## Load workspace with raw graph
 ws=SDG.WorkSpace('./raw_workspace.sdgws')
@@ -30,9 +30,39 @@ ws.sdg.write_to_gfa1('./dbg_tipclip_bubblepop.gfa')
 
 ```
 
-Use tangles to evaluate and solve the graph
+Solve bubbles using kmer coverage
 
 ```python
 ## ...same ws load and pe mapping as before ...
 
+## ...persist as necesary...
+```
+
+Use tangles to evaluate and solve common structures in the graph
+
+```python
+## ...same ws load and pe mapping as before ...
+from collections import Counter
+
+## Clasify graph structures
+FRONTIER_SIZE=100
+tangles=ws.sdg.get_all_tangleviews(FRONTIER_SIZE)
+print(Counter([tv.classify_tangle() for tv in tangles]).most_common())
+
+gc=SDG.GraphContigger(ws)
+ge=SDG.GraphEditor(ws)
+strider = SDG.Strider(ws)
+strider.add_datastore(peds)
+
+not_solved=solved=0
+for t in tangles:
+    if t.classify_tangle() == "bubble":
+        if gc.solve_bubble(t, strider, ge): solved+=1
+        else: not_solved+=1
+print("Bubbles solved/not_solved: %s/%s" %(solved, not_solved))
+
+ge.apply_all()
+ws.sdg.join_all_unitigs()
+
+## ...persist as necesary...
 ```
