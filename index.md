@@ -9,3 +9,5 @@ SDG snippets
 [Graph creation](graph_creation.md)
 
 [Graph cleanup](graph_cleanup.md)
+
+[Kmers](kmers.md)
