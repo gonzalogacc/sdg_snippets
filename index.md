@@ -4,7 +4,7 @@ SDG snippets
 
 ### Datastore creation
 
-[Datastore creation]('datastore_creation')
+[Datastore creation](datastore_creation.md)
 
-[Graph creation]('graph_creation')
+[Graph creation](graph_creation.md)
 
