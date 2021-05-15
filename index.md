@@ -11,3 +11,5 @@ SDG snippets
 [Graph cleanup](graph_cleanup.md)
 
 [Kmers](kmers.md)
+
+[Mapping reads](read_mapping.md)
