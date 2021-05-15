@@ -12,4 +12,6 @@ SDG snippets
 
 [Kmers](kmers.md)
 
-[Mapping reads](read_mapping.md)
+[Read mapping](read_mapping.md)
+
+[Graph exploration](graph_exploration.md)
