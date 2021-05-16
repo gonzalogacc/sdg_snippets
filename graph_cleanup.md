@@ -66,3 +66,27 @@ ws.sdg.join_all_unitigs()
 
 ## ...persist as necesary...
 ```
+
+
+Bubble support exploration
+
+Detect nodes with parallel nodes (bubbles) and count the read support for each side. Delete node with less support (example only)
+
+```python
+## ...load or create workspace...
+print("Nodes: %s" %len(ws.sdg.get_all_nodeviews()))
+ge=SDG.GraphEditor(ws)
+for nv in ws.sdg.get_all_nodeviews():
+    if len(nv.parallels())==1:
+        if len(peds.mapper.get_paths_in_node(nv.node_id())) > len(peds.mapper.get_paths_in_node(nv.parallels()[0].node_id())):
+            ge.queue_node_deletion(nv.parallels()[0].node_id())
+        else:
+            ge.queue_node_deletion(nv.node_id())
+
+ge.apply_all()
+ws.sdg.join_all_unitigs()
+print("Nodes: %s" %len(ws.sdg.get_all_nodeviews()))
+
+## ...persist as necesary...                                     
+```
+
