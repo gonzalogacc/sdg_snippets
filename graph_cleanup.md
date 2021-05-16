@@ -30,15 +30,7 @@ ws.sdg.write_to_gfa1('./dbg_tipclip_bubblepop.gfa')
 
 ```
 
-Solve bubbles using kmer coverage
-
-```python
-## ...same ws load and pe mapping as before ...
-
-## ...persist as necesary...
-```
-
-Use tangles to evaluate and solve common structures in the graph
+Use tangles to evaluate and solve common structures in the graph (WARNING: this operation modifies the graph)
 
 ```python
 ## ...same ws load and pe mapping as before ...
@@ -68,7 +60,7 @@ ws.sdg.join_all_unitigs()
 ```
 
 
-Bubble support exploration
+Bubble support exploration (WARNING: this operation modifies the graph)
 
 Detect nodes with parallel nodes (bubbles) and count the read support for each side. Delete node with less support (example only)
 
@@ -90,3 +82,25 @@ print("Nodes: %s" %len(ws.sdg.get_all_nodeviews()))
 ## ...persist as necesary...                                     
 ```
 
+Solve bubbles using kmer coverage
+
+```python
+## ...same ws load and pe mapping as before ...
+
+## ...persist as necesary...
+```
+
+
+Clip tipping (WARNING: this operation modifies the graph)
+
+```python
+## ...load or create workspace...
+
+## Tip clipping using topology and size only
+MAX_TIP_SIZE=125
+CLIPPING_ROUNDS=5
+gc=SDG.GraphContigger(ws)
+gc.clip_tips(MAX_TIP_SIZE, CLIPPING_ROUNDS)
+
+## ...persist as necesary...    
+```
