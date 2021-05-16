@@ -28,3 +28,11 @@ ws.dump('./raw_dbg_graph.sdgws')
 ws.sdg.write_to_gfa1('./raw_dbg_graph.gfa')
 
 ```
+
+Double K graph approach for unique anchor creation
+
+Make the assembly at k31 and k63 to have the k31 index available to get the unique anchors of the 63 graph (see strb paper)
+
+```python
+... graph creation code here ...
+```
