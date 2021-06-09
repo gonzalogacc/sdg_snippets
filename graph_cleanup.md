@@ -82,10 +82,40 @@ print("Nodes: %s" %len(ws.sdg.get_all_nodeviews()))
 ## ...persist as necesary...                                     
 ```
 
-Solve bubbles using kmer coverage
+Solve bubbles using kmer coverage. Checks for unsupported kmers in parallel nodes.
 
 ```python
+
 ## ...same ws load and pe mapping as before ...
+
+## Check for pe kmer count
+print(ws.ls())
+KMER_COLLECTION_NAME="main" ## <-- fill from your ws
+PE_COUNT_NAME="pe" ## <-- fill from your ws
+BUBBLE_SIZE=125 ## <-- Usually 2*K-1 to capture just one erroneous kmer in the middle un a unitig
+LOW_CVG=40 ## <-- Frequency below wich a kmer is cosidered an error, extracted from the kmer spectra (at k=PE_COLLECTION kmer size)
+
+## List nodes to delete
+to_delete=[]
+for nv in ws.sdg.get_all_nodeviews():
+    if nv.size()<=BUBBLE_SIZE and len(nv.parallels())==1:
+        on=nv.parallels()[0]
+        if on.size()<=BUBBLE_SIZE and abs(on.node_id())>nv.node_id():
+            nvlc=len([x for x in nv.kmer_coverage(KMER_COLLECTION_NAME,PE_COUNT_NAME) if x<=LOW_CVG])
+            onlc=len([x for x in on.kmer_coverage(KMER_COLLECTION_NAME,PE_COUNT_NAME) if x<=LOW_CVG])
+            if nvlc and not onlc:
+                print('del',nv,nvlc,on,onlc)
+                to_delete.append(nv.node_id())
+            if onlc and not nvlc:
+                print('del',on,onlc,nv,nvlc)
+                to_delete.append(abs(on.node_id()))
+
+## Delete nodes
+for x in to_delete:
+    ws.sdg.remove_node(x)
+
+## Join remaining nodes into unitigs
+ws.sdg.join_all_unitigs()
 
 ## ...persist as necesary...
 ```
